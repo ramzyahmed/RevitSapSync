@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>RevitSapSync</Name>
+    <Assembly>RevitSapSync.Addin.dll</Assembly>
+    <AddInId>a4075601-6a38-4686-bd25-cdddc1bcc5db</AddInId>
+    <FullClassName>RevitSapSync.Addin.RevitSapSyncApplication</FullClassName>
+    <VendorId>AECOM</VendorId>
+    <VendorDescription>AECOM Structural</VendorDescription>
+  </AddIn>
+</RevitAddIns>

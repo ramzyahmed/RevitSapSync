@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <RootNamespace>RevitSapSync.App</RootNamespace>
+    <AssemblyName>RevitSapSync.App</AssemblyName>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitSapSync.Core\RevitSapSync.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+  </ItemGroup>
+
+</Project>

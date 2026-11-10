@@ -1,0 +1,82 @@
+<Window x:Class="RevitSapSync.App.Views.SyncResultsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RevitSapSync - Sync Results" Height="700" Width="1150" WindowStartupLocation="CenterScreen">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Margin="0,0,0,12">
+            <Button DockPanel.Dock="Right" Content="Export to Excel" Command="{Binding ExportToExcelCommand}" Padding="12,5" VerticalAlignment="Top" />
+            <TextBlock Text="{Binding SummaryText}" TextWrapping="Wrap" Margin="0,0,12,0" />
+        </DockPanel>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="Errors">
+                <DataGrid ItemsSource="{Binding Errors}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="SAP ID" Binding="{Binding SapId}" Width="100" />
+                        <DataGridTextColumn Header="Revit Element Id" Binding="{Binding RevitElement.IntegerId}" Width="130" />
+                        <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="NotFound Reasons">
+                <DataGrid ItemsSource="{Binding PlaceholderReasons}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="SAP Section" Binding="{Binding SapSectionName}" Width="250" />
+                        <DataGridTextColumn Header="Reason" Binding="{Binding Reason}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Created">
+                <DataGrid ItemsSource="{Binding Created}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Revit Element Id" Binding="{Binding IntegerId}" Width="150" />
+                        <DataGridTextColumn Header="Unique Id" Binding="{Binding UniqueId}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Skipped (Creation)">
+                <DataGrid ItemsSource="{Binding Skipped}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="SAP ID" Binding="{Binding SapId}" Width="100" />
+                        <DataGridTextColumn Header="Section" Binding="{Binding SectionName}" Width="250" />
+                        <DataGridTextColumn Header="Reason" Binding="{Binding Reason}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Deleted">
+                <DataGrid ItemsSource="{Binding Deleted}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Revit Element Id" Binding="{Binding IntegerId}" Width="150" />
+                        <DataGridTextColumn Header="Unique Id" Binding="{Binding UniqueId}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Warnings">
+                <DataGrid ItemsSource="{Binding Warnings}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="SAP ID" Binding="{Binding SapId}" Width="100" />
+                        <DataGridTextColumn Header="SAP Member Type" Binding="{Binding SapMemberType}" Width="150" />
+                        <DataGridTextColumn Header="Revit Member Type" Binding="{Binding RevitMemberType}" Width="150" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Matching Beams">
+                <DataGrid ItemsSource="{Binding MatchingBeams}" AutoGenerateColumns="True" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal" />
+            </TabItem>
+            <TabItem Header="Matching Columns">
+                <DataGrid ItemsSource="{Binding MatchingColumns}" AutoGenerateColumns="True" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal" />
+            </TabItem>
+            <TabItem Header="Unmapped Revit Beams">
+                <DataGrid ItemsSource="{Binding UnmatchedRevitBeams}" AutoGenerateColumns="True" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal" />
+            </TabItem>
+            <TabItem Header="Unmapped Revit Columns">
+                <DataGrid ItemsSource="{Binding UnmatchedRevitColumns}" AutoGenerateColumns="True" IsReadOnly="True" CanUserAddRows="False" GridLinesVisibility="Horizontal" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

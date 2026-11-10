@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D57E8930-25F7-4395-BA12-1D1E77472361}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitSapSync.Core", "src\RevitSapSync.Core\RevitSapSync.Core.csproj", "{E607F4D8-2510-4200-9DD4-0599E3EA3515}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitSapSync.Addin", "src\RevitSapSync.Addin\RevitSapSync.Addin.csproj", "{C6D15A0E-5326-4BE2-8CDD-11C639A39B1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{41663B2D-EF0C-499E-BFD5-6DF2A3BEEC42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitSapSync.Core.Tests", "tests\RevitSapSync.Core.Tests\RevitSapSync.Core.Tests.csproj", "{4D6D57A4-75B5-4A4D-84F4-1F81BE7EC853}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E607F4D8-2510-4200-9DD4-0599E3EA3515}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{E607F4D8-2510-4200-9DD4-0599E3EA3515}.Debug|Any CPU.Build.0 = Debug|x64
+		{E607F4D8-2510-4200-9DD4-0599E3EA3515}.Release|Any CPU.ActiveCfg = Release|x64
+		{E607F4D8-2510-4200-9DD4-0599E3EA3515}.Release|Any CPU.Build.0 = Release|x64
+		{C6D15A0E-5326-4BE2-8CDD-11C639A39B1F}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{C6D15A0E-5326-4BE2-8CDD-11C639A39B1F}.Debug|Any CPU.Build.0 = Debug|x64
+		{C6D15A0E-5326-4BE2-8CDD-11C639A39B1F}.Release|Any CPU.ActiveCfg = Release|x64
+		{C6D15A0E-5326-4BE2-8CDD-11C639A39B1F}.Release|Any CPU.Build.0 = Release|x64
+		{4D6D57A4-75B5-4A4D-84F4-1F81BE7EC853}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{4D6D57A4-75B5-4A4D-84F4-1F81BE7EC853}.Debug|Any CPU.Build.0 = Debug|x64
+		{4D6D57A4-75B5-4A4D-84F4-1F81BE7EC853}.Release|Any CPU.ActiveCfg = Release|x64
+		{4D6D57A4-75B5-4A4D-84F4-1F81BE7EC853}.Release|Any CPU.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E607F4D8-2510-4200-9DD4-0599E3EA3515} = {D57E8930-25F7-4395-BA12-1D1E77472361}
+		{C6D15A0E-5326-4BE2-8CDD-11C639A39B1F} = {D57E8930-25F7-4395-BA12-1D1E77472361}
+		{4D6D57A4-75B5-4A4D-84F4-1F81BE7EC853} = {41663B2D-EF0C-499E-BFD5-6DF2A3BEEC42}
+	EndGlobalSection
+EndGlobal

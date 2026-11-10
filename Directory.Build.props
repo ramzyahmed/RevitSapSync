@@ -1,0 +1,33 @@
+<Project>
+
+  <PropertyGroup>
+    <Company>AECOM</Company>
+    <Product>RevitSapSync</Product>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- SAP2000 install directory, auto-detected across the versions commonly installed
+       side-by-side; override with -p:Sap2000InstallDir=... if needed. -->
+  <PropertyGroup>
+    <Sap2000InstallDir Condition="'$(Sap2000InstallDir)'=='' AND Exists('C:\Program Files\Computers and Structures\SAP2000 26\SAP2000v1.dll')">C:\Program Files\Computers and Structures\SAP2000 26</Sap2000InstallDir>
+    <Sap2000InstallDir Condition="'$(Sap2000InstallDir)'=='' AND Exists('C:\Program Files\Computers and Structures\SAP2000 25\SAP2000v1.dll')">C:\Program Files\Computers and Structures\SAP2000 25</Sap2000InstallDir>
+    <Sap2000InstallDir Condition="'$(Sap2000InstallDir)'=='' AND Exists('C:\Program Files\Computers and Structures\SAP2000 24\SAP2000v1.dll')">C:\Program Files\Computers and Structures\SAP2000 24</Sap2000InstallDir>
+  </PropertyGroup>
+
+  <!-- net48 lacks the runtime types modern C# (records, required members, init
+       accessors) compiles against; PolySharp polyfills them at compile time so the
+       same source works unchanged on both net48 and net8.0. -->
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
+    <PackageReference Include="PolySharp" Version="1.14.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

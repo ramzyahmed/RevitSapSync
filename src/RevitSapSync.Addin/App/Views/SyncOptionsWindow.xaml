@@ -1,0 +1,100 @@
+<Window x:Class="RevitSapSync.App.Views.SyncOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RevitSapSync - Sync Options" Height="700" Width="520" WindowStartupLocation="CenterScreen">
+    <DockPanel Margin="16">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Cancel" Width="90" Margin="0,0,8,0" Click="Cancel_Click" IsCancel="True" Padding="0,5" />
+            <Button Content="Start" Width="90" Click="Start_Click" IsDefault="True" Padding="0,5" />
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Background="#FFF8E1" Padding="10" Margin="0,0,0,16" CornerRadius="4">
+                    <CheckBox IsChecked="{Binding Options.PreviewOnly}" VerticalContentAlignment="Top">
+                        <TextBlock Text="Preview Only (No Changes) - runs every enabled step's detection logic and reports counts, but rolls back every transaction instead of committing it" TextWrapping="Wrap" Width="410" FontWeight="Bold" />
+                    </CheckBox>
+                </Border>
+
+                <TextBlock Text="Selection Scope" FontWeight="Bold" Margin="0,0,0,8" />
+                <CheckBox IsChecked="{Binding Options.UseSelectedSapMembers}" Margin="0,0,0,6" VerticalContentAlignment="Top">
+                    <TextBlock Text="Use Selected SAP Members" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.UseSelectedRevitElements}" VerticalContentAlignment="Top">
+                    <TextBlock Text="Use Selected Revit Elements" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <TextBlock Text="Independent of each other - entire model is used on whichever side isn't checked." TextWrapping="Wrap" Foreground="Gray" FontSize="11" Margin="0,4,0,0" />
+
+                <TextBlock Text="Synchronization Options" FontWeight="Bold" Margin="0,20,0,8" />
+                <CheckBox IsChecked="{Binding Options.UpdateSections}" Margin="0,0,0,6">
+                    <TextBlock Text="Update Sections" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.UpdateGeometry}" Margin="0,0,0,6">
+                    <TextBlock Text="Update Geometry" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.CreateBeams}" Margin="0,0,0,6">
+                    <TextBlock Text="Create Beams (for unmapped SAP beam-like frames)" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.CreateColumns}" Margin="0,0,0,6">
+                    <TextBlock Text="Create Columns (for unmapped SAP column-like frames)" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.DeleteUnmappedRevitMembers}" Margin="0,0,0,6">
+                    <TextBlock Text="Delete Unmapped Revit Members" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.GeometrySyncOptions.UpdateBeamRotation}" Margin="0,0,0,6">
+                    <TextBlock Text="Update Beam Rotation" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.GeometrySyncOptions.UpdateColumnRotation}" Margin="0,0,0,6">
+                    <TextBlock Text="Update Column Rotation" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Options.GeometrySyncOptions.UpdateJustificationReferences}">
+                    <TextBlock Text="Update Justification References (insertion points, beams and columns)" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+
+                <TextBlock Text="Mapping" FontWeight="Bold" Margin="0,20,0,8" />
+
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Length tolerance (fraction, e.g. 0.2 = 20%)" VerticalAlignment="Center" TextWrapping="Wrap" />
+                    <TextBox Grid.Column="1" Text="{Binding Options.MappingOptions.LengthTolerancePercent}" VerticalAlignment="Center" />
+                </Grid>
+
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Axis alignment tolerance (degrees)" VerticalAlignment="Center" TextWrapping="Wrap" />
+                    <TextBox Grid.Column="1" Text="{Binding Options.MappingOptions.AxisAlignmentToleranceDegrees}" VerticalAlignment="Center" />
+                </Grid>
+
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Tie-break threshold (%)" VerticalAlignment="Center" TextWrapping="Wrap" />
+                    <TextBox Grid.Column="1" Text="{Binding Options.MappingOptions.TieBreakPercentThreshold}" VerticalAlignment="Center" />
+                </Grid>
+
+                <CheckBox IsChecked="{Binding Options.MappingOptions.ReclassifyMemberTypeOnCategoryMismatch}" Margin="0,10,0,0" VerticalContentAlignment="Top">
+                    <TextBlock Text="Reclassify Beam/Column mismatches to match the mapped Revit element's actual category" TextWrapping="Wrap" Width="380" />
+                </CheckBox>
+
+                <TextBlock Text="Geometry Sync" FontWeight="Bold" Margin="0,20,0,8" />
+
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Movement tolerance (fraction, e.g. 0.001 = 0.1%)" VerticalAlignment="Center" TextWrapping="Wrap" />
+                    <TextBox Grid.Column="1" Text="{Binding Options.GeometrySyncOptions.MovementTolerancePercent}" VerticalAlignment="Center" />
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

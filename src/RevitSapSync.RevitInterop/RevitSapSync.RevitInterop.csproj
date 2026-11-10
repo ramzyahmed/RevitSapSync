@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <RootNamespace>RevitSapSync.RevitInterop</RootNamespace>
+    <AssemblyName>RevitSapSync.RevitInterop</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitSapSync.Core\RevitSapSync.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Revit 2024 runs on .NET Framework 4.8; Revit 2025 runs on .NET 8. Each TFM head
+       pulls the matching year's RevitAPI/RevitAPIUI via the community Nice3point
+       packages, so no local Revit install is required to build. -->
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="2024.*" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="2024.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0-windows'">
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="2025.*" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="2025.*" />
+  </ItemGroup>
+
+</Project>

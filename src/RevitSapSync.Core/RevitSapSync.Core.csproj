@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0</TargetFrameworks>
+    <RootNamespace>RevitSapSync.Core</RootNamespace>
+    <AssemblyName>RevitSapSync.Core</AssemblyName>
+  </PropertyGroup>
+
+</Project>

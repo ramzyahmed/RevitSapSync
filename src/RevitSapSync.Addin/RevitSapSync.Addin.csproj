@@ -1,0 +1,105 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <RootNamespace>RevitSapSync.Addin</RootNamespace>
+    <AssemblyName>RevitSapSync.Addin</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <!-- Revit loads this assembly directly with no NuGet-aware dependency resolution
+         of its own, so every transitive package dependency (CommunityToolkit.Mvvm, ...)
+         must be copied into the same output folder. This defaults to true on net48 class
+         libraries but false on net8.0+ ones - without this the net8.0-windows (Revit
+         2025) build silently omits them. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- Consolidated from what were separate Sap2000Interop/RevitInterop/App projects:
+       source stays organized under Sap2000Interop/, RevitInterop/, App/ subfolders (with
+       their original namespaces unchanged), but everything now compiles into this one
+       assembly. That matters for the Add-in-Manager dev loop specifically - Add-in
+       Manager shadow-copies its one entry DLL into a fresh temp folder on every load, but
+       does nothing for that DLL's *dependencies*, which get loaded once and never
+       replaced for the life of the Revit process.
+       <para>
+       RevitSapSync.Core's source is compiled DIRECTLY into this assembly too (Compile
+       Include below) rather than referenced via ProjectReference - confirmed live that
+       even the byte-array reflection trick (see git history / CoreAssemblyLoader,
+       removed) can't fix a dependency assembly: .NET Framework resolves an assembly name
+       exactly ONCE per process and caches that decision forever, regardless of whether
+       normal probing or a custom AssemblyResolve handler answered it. Editing Core and
+       reloading via Add-in Manager hit a stale, already-resolved snapshot and threw
+       TypeLoadException on any type added after that first resolution. With Core's
+       source compiled straight into this one assembly, there is no separate dependency
+       name left to resolve at all - Add-in Manager's existing fresh-reload-of-the-entry-DLL
+       behavior alone is enough, matching the user's own previously working single-project
+       approach. RevitSapSync.Core.csproj still exists as a project (see Exclude below) -
+       kept standalone solely so RevitSapSync.Core.Tests can build/run without Revit or
+       SAP2000 installed; it is no longer deployed or loaded by Revit itself. -->
+  <ItemGroup>
+    <Compile Include="..\RevitSapSync.Core\**\*.cs" Exclude="..\RevitSapSync.Core\bin\**;..\RevitSapSync.Core\obj\**" Link="Core\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <!-- Microsoft's official Excel PIA NuGet package - used for the validation report's
+         Excel export (matches the reference's Microsoft.Office.Interop.Excel COM interop
+         approach exactly, rather than a third-party spreadsheet library). Requires Excel
+         to be installed on any machine that runs the export. -->
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="2024.*" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="2024.*" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0-windows'">
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="2025.*" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="2025.*" />
+  </ItemGroup>
+
+  <!-- SAP2000 ships no NuGet package for its OAPI; the interop assembly is the same DLL
+       regardless of Revit/.NET target, so this reference is unconditioned. Requires
+       SAP2000 to be installed on any machine that builds this project - see
+       Sap2000InstallDir in the root Directory.Build.props. -->
+  <ItemGroup>
+    <Reference Include="SAP2000v1">
+      <HintPath>$(Sap2000InstallDir)\SAP2000v1.dll</HintPath>
+      <Private>true</Private>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
+    <None Include="RevitSapSync.2024.addin" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0-windows'">
+    <None Include="RevitSapSync.2025.addin" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- Local dev convenience: mirror the build output + manifest into Revit's per-year
+       Addins folder so the add-in loads on next Revit launch. Safe/reversible - only
+       touches a subfolder named RevitSapSync under each year's Addins directory.
+       RemoveDir first: a plain Copy only adds/updates files present in the current
+       output, so a file that stops being produced (e.g. a merged-away project's DLL, or
+       an old transitive dependency) would otherwise sit there stale forever - which is
+       exactly what happened here once already (a leftover Microsoft.Extensions.* set
+       from before that dependency was removed, and again with a stale
+       RevitSapSync.Core.dll/.reflection.dll before Core was folded into this project's
+       own compilation - see the Compile Include note above). Wiping the folder first
+       guarantees it only ever contains this exact build's output. -->
+  <Target Name="DeployToRevitAddinsFolder" AfterTargets="Build" Condition="'$(TargetFramework)'=='net48'">
+    <RemoveDir Directories="$(AppData)\Autodesk\Revit\Addins\2024\RevitSapSync" ContinueOnError="true" />
+    <ItemGroup>
+      <DeployFiles2024 Include="$(OutDir)**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DeployFiles2024)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\2024\RevitSapSync\%(RecursiveDir)" SkipUnchangedFiles="true" ContinueOnError="true" />
+  </Target>
+  <Target Name="DeployToRevitAddinsFolder2025" AfterTargets="Build" Condition="'$(TargetFramework)'=='net8.0-windows'">
+    <RemoveDir Directories="$(AppData)\Autodesk\Revit\Addins\2025\RevitSapSync" ContinueOnError="true" />
+    <ItemGroup>
+      <DeployFiles2025 Include="$(OutDir)**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DeployFiles2025)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\2025\RevitSapSync\%(RecursiveDir)" SkipUnchangedFiles="true" ContinueOnError="true" />
+  </Target>
+
+</Project>

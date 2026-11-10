@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0</TargetFrameworks>
+    <RootNamespace>RevitSapSync.Sap2000Interop</RootNamespace>
+    <AssemblyName>RevitSapSync.Sap2000Interop</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevitSapSync.Core\RevitSapSync.Core.csproj" />
+  </ItemGroup>
+
+  <!-- SAP2000 ships no NuGet package for its OAPI; the interop assembly is the same
+       DLL regardless of Revit/.NET target, so this reference is unconditioned.
+       Requires SAP2000 to be installed on any machine that builds this project -
+       see Sap2000InstallDir in the root Directory.Build.props. -->
+  <ItemGroup>
+    <Reference Include="SAP2000v1">
+      <HintPath>$(Sap2000InstallDir)\SAP2000v1.dll</HintPath>
+      <Private>true</Private>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
+</Project>
