@@ -6,6 +6,8 @@
 
 Revit and SAP2000 synchronisation project (`src/`, `tests/`). No project-specific rules are recorded yet: read the code before assuming. Revit and SAP2000 are not available in the cloud.
 
+Before touching any ETABS or SAP2000 API code, read `docs/CSI_API_NOTES.md` (live-tested crash hazards, units and API differences).
+
 ## Cloud session notes
 
 - Cloud sessions run on Linux: they cannot build or run WPF/WinForms apps, ETABS, SAP2000, Revit or Office. Edit carefully, run only tests that build on Linux, and state clearly what was not verified.
